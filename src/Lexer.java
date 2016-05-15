@@ -17,7 +17,7 @@ public class Lexer {
     private void skipSpaces() {
         while (spos < str.length()) {
             char ch = str.charAt(spos);
-            if (ch > ' ')
+            if (ch != ' ' && ch != '\n' && ch != '\t')
                 break;
             spos++;
         }
@@ -27,6 +27,8 @@ public class Lexer {
         return ch >= '0' && ch <= '9';
     }
 
+    private boolean isLetter(char ch) { return ch >= 'a' && ch <= 'z'; }
+
     public ArrayList<Token> parseTokens() {
         ArrayList<Token> tokens = new ArrayList<Token>();
         while (true) {
@@ -35,12 +37,19 @@ public class Lexer {
                 break;
             char ch = str.charAt(spos);
             if (isDigit(ch)) {
-                int p0 = spos;
-                // todo: нужно пропустить все цифры, чтобы указатель spos оказался после последней цифры
-                String numStr = str.substring(p0, spos);
-                int value = Integer.parseInt(numStr);
-                tokens.add(new Token(value));
-            } else if ("+-*/()".indexOf(ch) >= 0) {
+                int x0 = spos;
+                while (spos < str.length() && isDigit(str.charAt(spos))) {
+                    spos++;
+                }
+                tokens.add(new Token(Integer.parseInt(str.substring(x0,spos))));
+
+            } else if (isLetter(ch)) {
+                int x0 = spos;
+                while (spos < str.length() && (isLetter(ch) || isDigit(ch))) {
+                    ch = str.charAt(++spos);
+                }
+                tokens.add(new Token(str.substring(x0,spos)));
+            } else if ("+-*/()=;".indexOf(ch) >= 0) {
                 tokens.add(new Token(ch));
                 spos++;
             } else {
