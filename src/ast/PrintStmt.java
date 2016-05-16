@@ -19,7 +19,7 @@ public class PrintStmt extends Stmt {
     public void codegen(CodegenState state) {
         expr.codegen(state);
         state.addInstructionToMain("push format_out");
-        state.addInstructionToMain("call printf");
+        state.addInstructionToMain("call "+os_check.is_win()+"printf");
         state.addInstructionToMain("add esp, 8");
     }
 }

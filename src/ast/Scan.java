@@ -19,7 +19,7 @@ public class Scan extends Stmt {
     public void codegen(CodegenState state) {
         state.addInstructionToMain("push " + id.name);
         state.addInstructionToMain("push format_in");
-        state.addInstructionToMain("call scanf");
+        state.addInstructionToMain("call "+os_check.is_win()+"scanf");
         state.addInstructionToMain("add esp, 8");
     }
 }

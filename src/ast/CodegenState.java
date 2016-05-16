@@ -3,9 +3,9 @@ package ast;
 public class CodegenState {
     private static String header =
             "section .text\n" +
-            "global main\n" +
-            "extern printf\n" +
-            "extern scanf\n";
+            "global "+os_check.is_win()+"main\n" +
+            "extern "+os_check.is_win()+"printf\n" +
+            "extern "+os_check.is_win()+"scanf\n";
     StringBuilder dataSb = new StringBuilder();
     StringBuilder mainSb = new StringBuilder();
     int esp_offset = 0;
@@ -15,7 +15,7 @@ public class CodegenState {
                 "section .data\n" +
                 "format_in: db \"%d\", 0\n" +
                 "format_out: db \"output = %d\", 10, 0\n");
-        mainSb.append("main:\n");
+        mainSb.append(os_check.is_win()+"main:\n");
     }
 
     public void addVariableToData(String var_name) {
