@@ -152,12 +152,16 @@ public class Parser {
     }
 
     private Assign assign() {
-        if (!isAssign()) {
-            return null;
+        boolean had_assign = false;
+        if ((had_assign = isAssign())) {
+            consume();
         }
-        consume();
         if (!isId()) {
-            error_expected(TokenType.ID);
+            if (had_assign) {
+                error_expected(TokenType.ID);
+            } else {
+                return null;
+            }
         }
         String id_name = consume().id;
         if (!isSymbol('=')) {
@@ -219,7 +223,7 @@ public class Parser {
             String id_name = consume().id;
             // !!!
             if(!values.contains(id_name)) {
-                error("value '"+id_name+ "' not LETed yet in print");
+                error("value '"+id_name+ "' not LETed yet in primary");
             }
             return new Identifier(id_name);
         }
