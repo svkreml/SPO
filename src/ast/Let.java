@@ -1,12 +1,14 @@
 package ast;
 
 public class Let extends Stmt {
+
     public Identifier id;
     public Expr expr;
 
     public Let(Identifier id, Expr expr) {
         this.id = id;
         this.expr = expr;
+
     }
 
     public void print(int indent) {

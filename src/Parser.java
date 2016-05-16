@@ -5,18 +5,20 @@ import java.util.ArrayList;
 public class Parser {
 
     private ArrayList<Token> tokens;
+    private ArrayList<String> values = new ArrayList<String>();
+    private int line = 0;
     private int pos = 0;
 
     public Parser(ArrayList<Token> tokens) {
         this.tokens = tokens;
     }
 
-    // true, если больше лексем нет
+    // true, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
     private boolean end() {
         return pos >= tokens.size();
     }
 
-    // Текущая лексема
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private Token current() {
         if (end()) {
             return new Token();
@@ -25,7 +27,7 @@ public class Parser {
         }
     }
 
-    // Переход к следующей лексеме
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private void next() {
         if (!end()) {
             pos++;
@@ -38,12 +40,12 @@ public class Parser {
         return current;
     }
 
-    // true, если текущая лексема - число
+    // true, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ
     private boolean isNumber() {
         return current().type == TokenType.NUMBER;
     }
 
-    // true, если текущая лексема - искомый символ
+    // true, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     private boolean isSymbol(char c) {
         return current().type == TokenType.SYMBOL && current().c == c;
     }
@@ -59,11 +61,12 @@ public class Parser {
     private boolean isEof() { return current().type == TokenType.END; }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    // Грамматический разбор
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     /////////////////////////////////////////////////////////////////////////////////////////
 
     private void error(String message) {
-        System.out.println(message);
+        System.out.print(message);
+        System.out.println(" in line "+line);
         System.exit(1);
     }
 
@@ -85,6 +88,7 @@ public class Parser {
     }
 
     private Stmt stmt() {
+        line++;
         Stmt stmt;
         if ((stmt = let()) != null ||
             (stmt = printStmt()) != null ||
@@ -114,6 +118,11 @@ public class Parser {
         }
         consume();
         Expr expr = expression();
+        // !!!
+        if(values.contains(id_name)) {
+            error("value '"+id_name+ "' already used in let");
+        }
+        values.add(id_name);
         return new Let(new Identifier(id_name), expr);
     }
 
@@ -135,6 +144,10 @@ public class Parser {
             error_expected(TokenType.ID);
         }
         String id_name = consume().id;
+        // !!!
+        if(!values.contains(id_name)) {
+            error("value '"+id_name+ "' not LETed yet in scan");
+        }
         return new Scan(new Identifier(id_name));
     }
 
@@ -152,6 +165,10 @@ public class Parser {
         }
         consume();
         Expr expr = expression();
+        // !!!
+        if(!values.contains(id_name)) {
+            error("value '"+id_name+ "' not LETed yet in assign");
+        }
         return new Assign(new Identifier(id_name), expr);
     }
 
@@ -200,6 +217,10 @@ public class Parser {
         }
         if (isId()) {
             String id_name = consume().id;
+            // !!!
+            if(!values.contains(id_name)) {
+                error("value '"+id_name+ "' not LETed yet in print");
+            }
             return new Identifier(id_name);
         }
         if (isNumber()) {

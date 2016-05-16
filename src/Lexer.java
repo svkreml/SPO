@@ -31,6 +31,7 @@ public class Lexer {
 
     public ArrayList<Token> parseTokens() {
         ArrayList<Token> tokens = new ArrayList<Token>();
+        //ArrayList<String> values = new ArrayList<String>();
         while (true) {
             skipSpaces();
             if (spos >= str.length())
@@ -49,6 +50,7 @@ public class Lexer {
                     ch = str.charAt(++spos);
                 }
                 tokens.add(new Token(str.substring(x0,spos)));
+                //values.add(str.substring(x0,spos));
             } else if ("+-*/()=;".indexOf(ch) >= 0) {
                 tokens.add(new Token(ch));
                 spos++;
