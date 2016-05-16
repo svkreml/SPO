@@ -11,6 +11,9 @@ public class Identifier extends Expr {
         Printer.print_with_indent("Identifier", indent);
         Printer.print_with_indent("name=" + name, indent + 1);
     }
+    public String name_print(){
+        return this.name;
+    }
 
     public Identifier optimize() {
         return this;

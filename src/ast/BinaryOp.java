@@ -5,6 +5,9 @@ public class BinaryOp extends Expr {
     public Expr rhs;
     public char kind;
 
+    public String name_print(){
+        return "expression";
+    }
     public BinaryOp(Expr lhs, Expr rhs, char kind) {
         this.lhs = lhs;
         this.rhs = rhs;

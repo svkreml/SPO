@@ -21,6 +21,9 @@ public class CodegenState {
     public void addVariableToData(String var_name) {
         dataSb.append(var_name + ": dd 0\n");
     }
+    public void addVariableToData(String var_name,int x) {
+        dataSb.append(var_name);
+    }
 
     public void addInstructionToMain(String line) {
         mainSb.append(line + "\n");

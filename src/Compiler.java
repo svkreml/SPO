@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 public class Compiler {
     public static void main(String[] args) {
-        String str =    " let a=1;" +
-                        //" let a=10+5;" +
+        String str =    " let a=0;" +
+                        " let b=a;" +
                         " scan a; " +
                         //" print b;" +
-                        " a = a + 10;" +
-                        " print -a + 2;" +
+                        " a = a * 10;" +
+                        " print a;" +
+                " print a+2;" +
+                " print b;" +
                         //" print a*a*(b+1);"
         " ";
 
