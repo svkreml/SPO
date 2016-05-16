@@ -6,7 +6,9 @@ package ast;
 public class os_check {
     public static String is_win(){
         if(System.getProperty("os.name").contains("Windows"))
+
             return "_";
-        else return "";
+        else
+            return "";
     }
 }

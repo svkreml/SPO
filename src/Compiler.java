@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 public class Compiler {
     public static void main(String[] args) {
-        System.out.println(System.getProperty("os.name"));
-
         String str =    " let a=1;" +
                         //" let a=10+5;" +
                         " scan a; " +
