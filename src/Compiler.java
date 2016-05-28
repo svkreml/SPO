@@ -4,27 +4,26 @@ import ast.Program;
 import java.util.ArrayList;
 
 public class Compiler {
-    public static void main(String[] args) {
-        String str =    " let a=1;" +
-                        //" let a=10+5;" +
-                        " scan a; " +
-                        //" print b;" +
-                        " a = a + 10;" +
-                        " print -a + 2;" +
-                        //" print a*a*(b+1);"
-        " ";
+    public static void main(String[] args){
+
+        FilesTXT file = new FilesTXT();
+        file.Create();
+        String str = file.readFileAsString("input.txt");
+
+        System.out.println("\n---Input---\n");
+        System.out.println(str);
+
 
         Lexer lexer = new Lexer(str);
         ArrayList<Token> tokens = lexer.parseTokens();
-
         Parser parser = new Parser(tokens);
         Program program = parser.program();
-        program.print(0);
-
+        //program.print(0);
         Program opt_program = program.optimize();
+        System.out.println("\n---Tree---\n");
         opt_program.print(0);
-
         CodegenState state = new CodegenState();
+        System.out.println("\n---Code---\n");
         opt_program.codegen(state);
         System.out.println(state.code());
     }
