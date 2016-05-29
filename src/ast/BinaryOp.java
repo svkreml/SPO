@@ -7,6 +7,14 @@ public class BinaryOp extends Expr {
 
     public BinaryOp(Expr lhs, Expr rhs, char kind) {
         this.lhs = lhs;
+        if(rhs==null){
+            System.out.println("Error for some reason somewhere rhs is empty ");
+            System.exit(1);
+        }
+        if(lhs==null){
+            System.out.println("Error for some reason somewhere lhs is empty!");
+            System.exit(1);
+        }
         this.rhs = rhs;
         this.kind = kind;
     }
@@ -19,18 +27,28 @@ public class BinaryOp extends Expr {
     }
 
     public Expr optimize() {
-        BinaryOp opt = new BinaryOp(lhs.optimize(), rhs.optimize(), kind);
-        if (opt.lhs instanceof Int && opt.rhs instanceof Int) {
-            Int lhs = (Int) opt.lhs;
-            Int rhs = (Int) opt.rhs;
-            switch (opt.kind) {
-                case '+': return new Int(lhs.value + rhs.value);
-                case '-': return new Int(lhs.value - rhs.value);
-                case '*': return new Int(lhs.value * rhs.value);
-                case '/': return new Int(lhs.value / rhs.value);
-                default: throw new IllegalStateException();
+            BinaryOp opt = new BinaryOp(lhs.optimize(), rhs.optimize(), kind);
+            if (opt.lhs instanceof Int && opt.rhs instanceof Int) {
+                Int lhs = (Int) opt.lhs;
+                Int rhs = (Int) opt.rhs;
+                switch (opt.kind) {
+                    case '+':
+                        return new Int(lhs.value + rhs.value,lhs.line);
+                    case '-':
+                        return new Int(lhs.value - rhs.value,lhs.line);
+                    case '*':
+                        return new Int(lhs.value * rhs.value,lhs.line);
+                    case '/':
+                        if(rhs.value==0) {
+                            System.out.println("Deleted by zero in line "+((Int) opt.rhs).line);
+                            System.exit(1);
+                        }
+                        return new Int(lhs.value / rhs.value,lhs.line);
+                    default:
+                        throw new IllegalStateException();
+                }
             }
-        }
+
         return opt;
     }
 

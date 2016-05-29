@@ -6,7 +6,6 @@ public class Parser {
 
     private ArrayList<Token> tokens;
     private ArrayList<String> values = new ArrayList<String>();
-    private int line = 0;
     private int pos = 0;
 
     public Parser(ArrayList<Token> tokens) {
@@ -60,13 +59,10 @@ public class Parser {
     private boolean isAssign() { return current().type == TokenType.ASSIGN; }
     private boolean isEof() { return current().type == TokenType.END; }
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    // �������������� ������
-    /////////////////////////////////////////////////////////////////////////////////////////
 
     private void error(String message) {
         System.out.print(message);
-        System.out.println(" in line "+line);
+        System.out.println(" in line "+tokens.get(pos).line+", pos "+tokens.get(pos).pos+".");
         System.exit(1);
     }
 
@@ -75,7 +71,7 @@ public class Parser {
     }
 
     private void error_expected(char c) {
-        error("Expected '" + c + "' but " + current() + " found");
+        error("Expected '" + c + "' but " +"'"+ current()+"'" + " found");
     }
 
     public Program program() {
@@ -88,7 +84,6 @@ public class Parser {
     }
 
     private Stmt stmt() {
-        line++;
         Stmt stmt;
         if ((stmt = let()) != null ||
             (stmt = printStmt()) != null ||
@@ -177,7 +172,7 @@ public class Parser {
     }
 
     private Expr expression() {
-        Expr left = muldiv(); // -1-(-2)*(3/4)/5+6
+        Expr left = muldiv();
         while (true) {
             if (isSymbol('+') || isSymbol('-')) {
                 char c = consume().c;
@@ -221,7 +216,6 @@ public class Parser {
         }
         if (isId()) {
             String id_name = consume().id;
-            // !!!
             if(!values.contains(id_name)) {
                 error("value '"+id_name+ "' not LETed yet in primary");
             }
@@ -229,8 +223,10 @@ public class Parser {
         }
         if (isNumber()) {
             int value = consume().number;
-            return new Int(value);
+            return new Int(value,tokens.get(pos).line);
         }
+
+        error("Expr exsepted");
         return null;
     }
 }

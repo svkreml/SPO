@@ -3,22 +3,28 @@ public class Token {
     public int number;
     public char c;
     public String id;
-
+    public int line;
+    public int pos;
     public Token() {
         this.type = TokenType.END;
     }
 
-    public Token(int number) {
+    public Token(int number,int line, int pos) {
         this.type = TokenType.NUMBER;
         this.number = number;
+        this.line=line;
+        this.pos=pos;
     }
 
-    public Token(char c) {
+    public Token(char c,int line, int pos) {
         this.type = TokenType.SYMBOL;
         this.c = c;
+        this.line=line;
+        this.pos=pos;
     }
 
-    public Token(String s) {
+    public Token(String s,int line, int pos) {
+        this.pos=pos;
         switch (s) {
             case "let":
                 this.type = TokenType.LET;
@@ -35,7 +41,10 @@ public class Token {
             default:
                 this.type = TokenType.ID;
                 this.id = s;
+                this.pos=pos-s.length();
         }
+        this.line=line;
+
     }
 
     public String toString() {

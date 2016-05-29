@@ -2,10 +2,13 @@ package ast;
 
 public class Int extends Expr {
     public int value;
-
-    public Int(int value) {
+    public int line;
+    public Int(int value,int line) {
+        this.line=line;
         this.value = value;
     }
+
+
 
     public void print(int indent) {
         Printer.print_with_indent("Int", indent);
