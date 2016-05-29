@@ -1,10 +1,5 @@
-let a=3;
-
-
-
-
-
-print 5/0;
+let a=0;
+print a/(-7-6)*0;
 scan a;
 a=a-2;
 print a;

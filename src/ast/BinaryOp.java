@@ -28,27 +28,26 @@ public class BinaryOp extends Expr {
 
     public Expr optimize() {
             BinaryOp opt = new BinaryOp(lhs.optimize(), rhs.optimize(), kind);
-            if (opt.lhs instanceof Int && opt.rhs instanceof Int) {
+        if ((opt.kind=='/')&&(opt.rhs instanceof Int)&&(((Int) opt.rhs).value==0)) {
+            System.out.println("Deleted by zero in line "+((Int) opt.rhs).line);
+            System.exit(1);
+        }
+            else if (opt.lhs instanceof Int && opt.rhs instanceof Int) {
                 Int lhs = (Int) opt.lhs;
                 Int rhs = (Int) opt.rhs;
                 switch (opt.kind) {
                     case '+':
-                        return new Int(lhs.value + rhs.value,lhs.line);
+                        return new Int(lhs.value + rhs.value, lhs.line);
                     case '-':
-                        return new Int(lhs.value - rhs.value,lhs.line);
+                        return new Int(lhs.value - rhs.value, lhs.line);
                     case '*':
-                        return new Int(lhs.value * rhs.value,lhs.line);
+                        return new Int(lhs.value * rhs.value, lhs.line);
                     case '/':
-                        if(rhs.value==0) {
-                            System.out.println("Deleted by zero in line "+((Int) opt.rhs).line);
-                            System.exit(1);
-                        }
-                        return new Int(lhs.value / rhs.value,lhs.line);
+                        return new Int(lhs.value / rhs.value, lhs.line);
                     default:
                         throw new IllegalStateException();
                 }
             }
-
         return opt;
     }
 
