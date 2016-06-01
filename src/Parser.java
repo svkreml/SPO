@@ -223,7 +223,7 @@ public class Parser {
         }
         if (isNumber()) {
             int value = consume().number;
-            return new Int(value,tokens.get(pos).line);
+            return new Int(value,tokens.get(pos).line, tokens.get(pos).pos);
         }
 
         error("Expr exsepted");

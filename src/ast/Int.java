@@ -3,9 +3,11 @@ package ast;
 public class Int extends Expr {
     public int value;
     public int line;
-    public Int(int value,int line) {
+    public int pos;
+    public Int(int value,int line,int pos) {
         this.line=line;
         this.value = value;
+        this.pos =pos;
     }
 
 

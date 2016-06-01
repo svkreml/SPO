@@ -20,7 +20,7 @@ public class UnaryOp extends Expr {
         if (opt.expr instanceof Int) {
             Int expr = (Int) opt.expr;
             switch (opt.kind) {
-                case '-': return new Int(0 - expr.value,expr.line);
+                case '-': return new Int(0 - expr.value,expr.line, expr.pos);
                 default: throw new IllegalStateException();
             }
         }

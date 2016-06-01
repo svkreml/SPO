@@ -19,7 +19,7 @@ public class Lexer {
     private void skipSpaces() {
         while (spos < str.length()) {
             char ch = str.charAt(spos);
-            if(ch=='\r') {
+            if(ch=='\n') {
                 line++;
                 Prev_pos=spos+2;// \r\n
             }
