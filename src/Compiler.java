@@ -18,11 +18,11 @@ public class Compiler {
         ArrayList<Token> tokens = lexer.parseTokens();
         Parser parser = new Parser(tokens);
         Program program = parser.program();
-        System.out.println("\n---Tree---\n");
-        program.print(0);
+        //System.out.println("\n---Tree---\n");
+        //program.print(0);
         Program opt_program = program.optimize();
-        System.out.println("\n---Opt-Tree---\n");
-        opt_program.print(0);
+        //System.out.println("\n---Opt-Tree---\n");
+        //opt_program.print(0);
         CodegenState state = new CodegenState();
         System.out.println("\n---Code---\n");
         opt_program.codegen(state);

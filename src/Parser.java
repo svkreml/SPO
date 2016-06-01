@@ -12,7 +12,7 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    // true, ���� ������ ������ ���
+
     private boolean end() {
         return pos >= tokens.size();
     }
