@@ -21,7 +21,10 @@ public class Lexer {
             char ch = str.charAt(spos);
             if(ch=='\n') {
                 line++;
-                Prev_pos=spos+2;// \r\n
+                if(System.getProperty("os.name").contains("Windows"))
+                    Prev_pos=spos+2;
+                else
+                    Prev_pos=spos+1;// \r\n
             }
             if (ch != '\r'&&ch != ' ' && ch != '\n' && ch != '\t')
                 break;
