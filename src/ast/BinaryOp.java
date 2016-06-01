@@ -29,7 +29,7 @@ public class BinaryOp extends Expr {
     public Expr optimize() {
             BinaryOp opt = new BinaryOp(lhs.optimize(), rhs.optimize(), kind);
         if ((opt.kind=='/')&&(opt.rhs instanceof Int)&&(((Int) opt.rhs).value==0)) {
-            System.out.println("Deleted by zero in line "+((Int) opt.rhs).line+" in pos "+((Int) opt.rhs).pos);
+            System.out.println("Division by zero in line "+((Int) opt.rhs).line+" in pos "+((Int) opt.rhs).pos);
             System.exit(1);
         }
             else if (opt.lhs instanceof Int && opt.rhs instanceof Int) {

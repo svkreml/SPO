@@ -1,5 +1,5 @@
 let a=0;
-print a/(-7-6);
+print a/(-7-6)/0;
 scan a;
 a=a-2;
 print a;
